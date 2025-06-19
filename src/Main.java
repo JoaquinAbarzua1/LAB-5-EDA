@@ -1,7 +1,6 @@
-//---------------------------Clase Player----------------------*--
+import java.util.*
 
-import java.util.Hashtable;
-import java.util.Map;
+//---------------------------Clase Player----------------------*--
 
 class Player {
     private String playerName;
@@ -42,18 +41,35 @@ class Player {
 //------------------------Clase Scoreboard--------------------------
 
 class Scoreboard {
-    //no sé realmente cómo se debe implementar esto
-    //hay que buscar en las clases del profe o no sé
-    private Map<Integer, String> winTree;
 
-    private Hashtable<String, Player> players;
+    private TreeMap<Integer, List<String>> winTree; //Se usa implementación estándar de Java TreeMap (por ahora hasta que me lo aclaren)
+    //Usa List<String> porque varios jugadores pueden tener la misma cantidad de victorias
+
+
+    private Map<String, Player> players;//Se usa implementación estándar de Java de HashMap (por ahora hasta que me lo aclaren)
 
     private int playedGames;
 
-    public Scoreboard() {}
+    public Scoreboard() {
+        winTree = new TreeMap<>();
+        players = new HashMap<>();
+        playedGames = 0;
 
-    //dejo escrito los métodos por mientras, aún no sé cómo debo manejar los atributos
-    public void addGameResult (String winnerPlayerName, String looserPlayerName, boolean draw){ ;}
+    }
+
+    public void addGameResult (String winnerPlayerName, String looserPlayerName, boolean draw){
+        if(draw){
+            players.get(looserPlayerName).addDraw();
+            players.get(winnerPlayerName).addDraw();
+            playedGames++;
+        }
+        else{
+            players.get(looserPlayerName).addLoss();
+            players.get(winnerPlayerName).addWin();
+            playedGames++;
+        }
+
+    }
 
     public void registerPlayer (String playerName){}
 
@@ -66,7 +82,8 @@ class Scoreboard {
 
 }
 
-//------------------------Clase implementación BST------------------------
+/*
+//------------------------Clase implementación BST (por ahora usaré TreeMap que es la implementación estándar de Java, le preguntaré al profe Karol------------------------
 //implementación según el libro del profe
 
 class BST<Key extends Comparable<Key>, Value> {
@@ -116,12 +133,18 @@ class BST<Key extends Comparable<Key>, Value> {
     }
 
     //no sé si habrá que agregar más métodos, pero esto es lo mínimo que se pide
-
-
 }
+*/
 
+
+
+
+/*
 //---------------------Clase HashST--------------------------------
 class HashST{}
+
+*/
+
 
 
 //-------------------------Clase ConnectFour-----------------------
