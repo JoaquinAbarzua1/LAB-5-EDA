@@ -42,7 +42,9 @@ class Player {
 
 class Scoreboard {
 
-    private TreeMap<Integer, List<String>> winTree; //Se usa implementación estándar de Java TreeMap (por ahora hasta que me lo aclaren)
+    private TreeMap<Integer, List<String>> winTree;
+    
+    //Se usa implementación estándar de Java TreeMap (por ahora hasta que me lo aclaren)
     //Usa List<String> porque varios jugadores pueden tener la misma cantidad de victorias
 
 
@@ -71,13 +73,34 @@ class Scoreboard {
 
     }
 
-    public void registerPlayer (String playerName){}
+    public void registerPlayer (String playerName){
+        if(!players.containsKey(playerName)){
+            Player p = new Player(playerName);
+            palyers.put(player , p ) ;
+            addToWinTree(p);
+    }
 
-    public void checkPlayer (String playerName){}
+ //check player ingresado en el register
 
-    public Player[] winRange (int lo, int hi){}
+    public Player[] winRange (int lo, int hi){
+     List<player> result = new Arraylist<>();
+        // con un for tal vez recorriendo el mapa 
+        // no sabria como avanzar aca 
+       
+        }
+    }
 
-    public Player[] winSuccesor (int wins) {}
+    public Player[] winSuccesor (int wins) {
+        Interger higher = winTree.higherKey(wins);
+        if(higher == null){
+            return new Player[0]; // si no hay retorna nada 
+        }
+        list<Player> result = new Arraylist<>();
+        for ( string name : winTree.get(higher)){
+        result.add(players.get(name));
+        }
+        return result.toArray(new Player[0]);
+    }
 
 
 }
