@@ -1,4 +1,4 @@
-import java.util.*
+import java.util.*;
 
 //---------------------------Clase Player----------------------*--
 
@@ -42,14 +42,9 @@ class Player {
 
 class Scoreboard {
 
-    private TreeMap<Integer, List<String>> winTree;
-    
-    //Se usa implementación estándar de Java TreeMap (por ahora hasta que me lo aclaren)
+    private TreeMap<Integer, List<String>> winTree; //Se usa implementación estándar de Java TreeMap
     //Usa List<String> porque varios jugadores pueden tener la misma cantidad de victorias
-
-
-    private Map<String, Player> players;//Se usa implementación estándar de Java de HashMap (por ahora hasta que me lo aclaren)
-
+    private Map<String, Player> players;//Se usa implementación estándar de Java de HashMap
     private int playedGames;
 
     public Scoreboard() {
@@ -63,32 +58,43 @@ class Scoreboard {
         if(draw){
             players.get(looserPlayerName).addDraw();
             players.get(winnerPlayerName).addDraw();
-            playedGames++;
         }
         else{
             players.get(looserPlayerName).addLoss();
             players.get(winnerPlayerName).addWin();
-            playedGames++;
+            //falta actualizar winTree, pero hay que ver cómo sacar al jugador, actualizarle sus ganadas
+            // y volver a insertarlo donde corresponda
         }
+        playedGames++;
 
     }
 
     public void registerPlayer (String playerName){
-        if(!players.containsKey(playerName)){
+        if(!players.containsKey(playerName)) {
             Player p = new Player(playerName);
-            palyers.put(player , p ) ;
+            players.put(player, p);
             addToWinTree(p);
+        }
     }
 
  //check player ingresado en el register
 
     public Player[] winRange (int lo, int hi){
-     List<player> result = new Arraylist<>();
-        // con un for tal vez recorriendo el mapa 
-        // no sabria como avanzar aca 
-       
+            List<Player> result = new Arraylist<>();
+
+            for(Integer ganadas : winTree.keySet()) { //.keySet() retorna un Set (conjunto) de llaves iterables (para recorrerlas)
+                if (ganadas >= lo && ganadas <= hi) {
+                    List<String> jugadores = winTree.get(ganadas);
+                    for (String nombreJugador : jugadores) {
+                        result.add(players.get(nombreJugador));
+                    }
+                }
+            }
+            return result.toArray(new Player[0]);
         }
-    }
+
+
+
 
     public Player[] winSuccesor (int wins) {
         Interger higher = winTree.higherKey(wins);
@@ -104,70 +110,6 @@ class Scoreboard {
 
 
 }
-
-/*
-//------------------------Clase implementación BST (por ahora usaré TreeMap que es la implementación estándar de Java, le preguntaré al profe Karol------------------------
-//implementación según el libro del profe
-
-class BST<Key extends Comparable<Key>, Value> {
-
-    private Node root;
-
-    //Nodos del arbol
-    private class Node {
-        private Key key;
-        private Value val;
-        private Node left, right;
-        public Node(Key key, Value val) {
-            this.key = key;
-            this.val = val;
-        }
-    }
-    //método recursivo para colocar elementos en el arbol
-    public void put(Key key, Value val) { root = put(root, key, val); }
-
-    private Node put(Node node, Key key, Value val) {
-        if (node == null) { return new Node(key, val); } //si el arbol está vacío, crea el nodo raiz o padre
-
-        int cmp = key.compareTo(node.key); //crea un comparador, en este caso, compara la clave que será el
-        // número de victorias
-
-        if (cmp < 0) { node.left = put(node.left, key, val); }//si la clave del nodo que quiero insertar es menor que la
-        // clave del nodo que estoy viendo, me voy por la izquierda
-
-        else if (cmp > 0) { node.right = put(node.right, key, val); }//si la clave es mayor, me voy por la derecha
-
-        else { node.val = val; }
-
-        return node;
-    }
-
-    //método que retorna el valor (nombre del jugador, o supuestamente la lista de jugadores)
-    // asociado a la clave (numero de victorias)
-    public Value get(Key key) {
-        Node node = root;
-        while (node != null) {
-            int cmp = key.compareTo(node.key);
-            if (cmp < 0) { node = node.left; }
-            else if (cmp > 0) { node = node.right; }
-            else { return node.val; }
-        }
-        return null; //retorna null en caso de que no hayan jugadores con esta cantidad de victorias
-    }
-
-    //no sé si habrá que agregar más métodos, pero esto es lo mínimo que se pide
-}
-*/
-
-
-
-
-/*
-//---------------------Clase HashST--------------------------------
-class HashST{}
-
-*/
-
 
 
 //-------------------------Clase ConnectFour-----------------------
